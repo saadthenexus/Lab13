@@ -2,8 +2,28 @@ public class RolesAndPermissions extends User {
     //        ************************************************************ Behaviours/Methods ************************************************************
     public static final int AUTH_FAILED = -1;
     public static final int AUTH_ADMIN = 1;
-    public static final int AUTH_PASSENGER = 2;
+    public static final int AUTH_PASSENGER = 2; 
+    private static final List<Admin> adminUsers = new ArrayList<>();
     
+    static {
+        // Initialize with root admin
+        adminUsers.add(new Admin("root", "root"));
+    }
+
+    public void addAdmin(String username, String password) {
+        adminUsers.add(new Admin(username, password));
+    }
+
+    public int isPrivilegedUserOrNot(String username, String password) {
+        for (int i = 0; i < adminUsers.size(); i++) {
+            Admin admin = adminUsers.get(i);
+            if (username.equals(admin.getUsername()) && 
+                password.equals(admin.getPassword())) {
+                return i;
+            }
+        }
+        return -1;
+    }
     public class AuthResult {
         private final int authType;
         private final String userId;

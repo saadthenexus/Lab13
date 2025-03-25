@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 public class User {
     // Constants for array sizes and limits
-    private static final int MAX_ADMIN_USERS = 10;
     private static final int MAX_TICKETS_PER_BOOKING = 10;
     
     // Constants for menu validation
@@ -19,7 +18,6 @@ public class User {
     private static final int MAX_ADMIN_MENU_OPTION = 8;
     private static final int MAX_MANUAL_OPTION = 2;
     
-    static String[][] adminUserNameAndPassword = new String[MAX_ADMIN_USERS][2];
     private static List<Customer> customersCollection = new ArrayList<>();
     public static void main(String[] args) {
         int countNumOfUsers = 1;
@@ -59,6 +57,23 @@ public class User {
         } while (desiredOption != 0);
     }
 
+    private static int registerAdmin(RolesAndPermissions r1, int countNumOfUsers, Scanner read1) {
+        System.out.print("\nEnter the UserName to Register :    ");
+        String username = read1.nextLine();
+        System.out.print("Enter the Password to Register :     ");
+        String password = read1.nextLine();
+        
+        while (r1.isPrivilegedUserOrNot(username, password) != -1) {
+            System.out.print("ERROR!!! Admin with same UserName already exist. Enter new UserName:   ");
+            username = read1.nextLine();
+            System.out.print("Enter the Password Again:   ");
+            password = read1.nextLine();
+        }
+
+        r1.addAdmin(username, password);
+        return countNumOfUsers + 1;
+    }
+
     private static void displayWelcomeMessage() {
         System.out.println("\n\t\t\t\t\t+++++++++++++ Welcome to BAV AirLines +++++++++++++\n\nTo Further Proceed, Please enter a value.");
         System.out.println("\n***** Default Username && Password is root-root ***** Using Default Credentials will restrict you to just view the list of Passengers....\n");
@@ -74,8 +89,6 @@ public class User {
     }
 
     private static void adminLogin(RolesAndPermissions r1, Customer c1, Flight f1, FlightReservation bookingAndReserving, Scanner read, Scanner read1) {
-        adminUserNameAndPassword[0][0] = "root";
-        adminUserNameAndPassword[0][1] = "root";
         
         System.out.print("\nEnter the UserName to login to the Management System :     ");
         String username = read1.nextLine();
