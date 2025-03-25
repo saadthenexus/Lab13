@@ -92,7 +92,7 @@ public class User {
         System.out.print("Enter the Password to Register :     ");
         String password = read1.nextLine();
         
-        while (r1.isPrivilegedUserOrNot(username, password) != -1) {
+        while (r1.validateAdminCredentials(username, password) != -1) {
             System.out.print("ERROR!!! Admin with same UserName already exist. Enter new UserName:   ");
             username = read1.nextLine();
             System.out.print("Enter the Password Again:   ");
