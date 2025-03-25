@@ -9,9 +9,18 @@ import java.util.List;
 import java.util.Scanner;
 
 public class User {
-    static String[][] adminUserNameAndPassword = new String[10][2];
+    // Constants for array sizes and limits
+    private static final int MAX_ADMIN_USERS = 10;
+    private static final int MAX_TICKETS_PER_BOOKING = 10;
+    
+    // Constants for menu validation
+    private static final int MIN_MENU_OPTION = 0;
+    private static final int MAX_MAIN_MENU_OPTION = 5;
+    private static final int MAX_ADMIN_MENU_OPTION = 8;
+    private static final int MAX_MANUAL_OPTION = 2;
+    
+    static String[][] adminUserNameAndPassword = new String[MAX_ADMIN_USERS][2];
     private static List<Customer> customersCollection = new ArrayList<>();
-
     public static void main(String[] args) {
         int countNumOfUsers = 1;
         RolesAndPermissions r1 = new RolesAndPermissions();
@@ -57,7 +66,7 @@ public class User {
 
     private static int getValidMenuOption(Scanner scanner) {
         int option = scanner.nextInt();
-        while (option < 0 || option > 8) {
+        while (option < MIN_MENU_OPTION || option > MAX_MAIN_MENU_OPTION) {
             System.out.print("ERROR!! Please enter value between 0 - 4. Enter the value again :\t");
             option = scanner.nextInt();
         }
@@ -272,7 +281,7 @@ public class User {
         String flightToBeBooked = read1.nextLine();
         System.out.print("Enter the Number of tickets for " + flightToBeBooked + " flight :   ");
         int numOfTickets = read.nextInt();
-        while (numOfTickets > 10) {
+        while (numOfTickets > MAX_TICKETS_PER_BOOKING) {
             System.out.print("ERROR!! You can't book more than 10 tickets at a time for single flight....Enter number of tickets again : ");
             numOfTickets = read.nextInt();
         }
@@ -346,7 +355,7 @@ public class User {
 
     private static int getValidManualChoice(Scanner read) {
         int choice = read.nextInt();
-        while (choice < 1 || choice > 2) {
+        while (choice < 1 || choice > MAX_MANUAL_OPTION) {
             System.out.print("ERROR!!! Invalid entry...Please enter a value either 1 or 2....Enter again....");
             choice = read.nextInt();
         }
