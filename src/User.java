@@ -83,8 +83,12 @@ public class User {
         String password = read1.nextLine();
         System.out.println();
 
-        int privilegeLevel = r1.isPrivilegedUserOrNot(username, password);
-        handleAdminPrivileges(privilegeLevel, username, c1, f1, bookingAndReserving, read, read1);
+        RolesAndPermissions.AuthResult authResult = r1.authenticateUser(username, password);
+        if (authResult.getAuthType() == RolesAndPermissions.AUTH_ADMIN) {
+            handleAdminPrivileges(Integer.parseInt(authResult.getUserId()), username, c1, f1, bookingAndReserving, read, read1);
+        } else {
+            System.out.printf("\n%20sERROR!!! Unable to login Cannot find user with the entered credentials.... Try Creating New Credentials or get yourself register by pressing 4....\n", "");
+        }
     }
 
     private static void handleAdminPrivileges(int privilegeLevel, String username, Customer c1, Flight f1, 
@@ -220,17 +224,17 @@ public class User {
     }
 
     private static void passengerLogin(RolesAndPermissions r1, Customer c1, Flight f1, 
-            FlightReservation bookingAndReserving, Scanner read, Scanner read1) {
-        System.out.print("\n\nEnter the Email to Login : \t");
-        String userName = read1.nextLine();
-        System.out.print("Enter the Password : \t");
-        String password = read1.nextLine();
-        String[] result = r1.isPassengerRegistered(userName, password).split("-");
+    FlightReservation bookingAndReserving, Scanner read, Scanner read1) {
+    System.out.print("\n\nEnter the Email to Login : \t");
+    String userName = read1.nextLine();
+    System.out.print("Enter the Password : \t");
+    String password = read1.nextLine();
 
-        if (Integer.parseInt(result[0]) == 1) {
-            handlePassengerOperations(userName, result[1], c1, f1, bookingAndReserving, read, read1);
+    RolesAndPermissions.AuthResult authResult = r1.authenticateUser(userName, password);
+        if (authResult.getAuthType() == RolesAndPermissions.AUTH_PASSENGER) {
+        handlePassengerOperations(userName, authResult.getUserId(), c1, f1, bookingAndReserving, read, read1);
         } else {
-            System.out.printf("\n%20sERROR!!! Unable to login Cannot find user with the entered credentials.... Try Creating New Credentials or get yourself register by pressing 4....\n", "");
+        System.out.printf("\n%20sERROR!!! Unable to login Cannot find user with the entered credentials.... Try Creating New Credentials or get yourself register by pressing 4....\n", "");
         }
     }
 

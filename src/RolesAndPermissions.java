@@ -1,6 +1,47 @@
 public class RolesAndPermissions extends User {
     //        ************************************************************ Behaviours/Methods ************************************************************
+    public static final int AUTH_FAILED = -1;
+    public static final int AUTH_ADMIN = 1;
+    public static final int AUTH_PASSENGER = 2;
+    
+    public class AuthResult {
+        private final int authType;
+        private final String userId;
+    
+        public AuthResult(int authType, String userId) {
+            this.authType = authType;
+            this.userId = userId;
+        }
+    
+        public int getAuthType() {
+            return authType;
+        }
+    
+        public String getUserId() {
+            return userId;
+        }
+    }
+    
+    public AuthResult authenticateUser(String username, String password) {
+            // Try admin authentication first
+        int adminIndex = isPrivilegedUserOrNot(username, password);
+        if (adminIndex >= 0) {
+            return new AuthResult(AUTH_ADMIN, String.valueOf(adminIndex));
+        }
+    
+            // Try passenger authentication
+        String passengerResult = isPassengerRegistered(username, password);
+        if (passengerResult.startsWith("1-")) {
+            return new AuthResult(AUTH_PASSENGER, passengerResult.substring(2));
+        }
+    
+            // Authentication failed
+        return new AuthResult(AUTH_FAILED, null);
+    }
+    
 
+
+    
     /**
      * Checks if the admin with specified credentials is registered or not.
      * @param username of the imaginary admin
