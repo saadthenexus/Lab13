@@ -218,24 +218,6 @@ public class User {
         f1.deleteFlight(flightNum);
     }
 
-    private static int registerAdmin(RolesAndPermissions r1, int countNumOfUsers, Scanner read1) {
-        System.out.print("\nEnter the UserName to Register :    ");
-        String username = read1.nextLine();
-        System.out.print("Enter the Password to Register :     ");
-        String password = read1.nextLine();
-        
-        while (r1.isPrivilegedUserOrNot(username, password) != -1) {
-            System.out.print("ERROR!!! Admin with same UserName already exist. Enter new UserName:   ");
-            username = read1.nextLine();
-            System.out.print("Enter the Password Again:   ");
-            password = read1.nextLine();
-        }
-
-        adminUserNameAndPassword[countNumOfUsers][0] = username;
-        adminUserNameAndPassword[countNumOfUsers][1] = password;
-        return countNumOfUsers + 1;
-    }
-
     private static void passengerLogin(RolesAndPermissions r1, Customer c1, Flight f1, 
     FlightReservation bookingAndReserving, Scanner read, Scanner read1) {
     System.out.print("\n\nEnter the Email to Login : \t");

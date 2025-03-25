@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class RolesAndPermissions extends User {
     //        ************************************************************ Behaviours/Methods ************************************************************
     public static final int AUTH_FAILED = -1;
@@ -62,24 +64,7 @@ public class RolesAndPermissions extends User {
 
 
     
-    /**
-     * Checks if the admin with specified credentials is registered or not.
-     * @param username of the imaginary admin
-     * @param password of the imaginary admin
-     * @return -1 if admin not found, else index of the admin in the array.
-     */
-    public int isPrivilegedUserOrNot(String username, String password) {
-        int isFound = -1;
-        for (int i = 0; i < adminUserNameAndPassword.length; i++) {
-            if (username.equals(adminUserNameAndPassword[i][0])) {
-                if (password.equals(adminUserNameAndPassword[i][1])) {
-                    isFound = i;
-                    break;
-                }
-            }
-        }
-        return isFound;
-    }
+   
 
     /**
      * Checks if the passenger with specified credentials is registered or not.
