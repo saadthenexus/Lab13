@@ -9,6 +9,35 @@ import java.util.List;
 import java.util.Scanner;
 
 public class User {
+
+    enum MainMenuOption {
+        EXIT(0), 
+        LOGIN_ADMIN(1), 
+        REGISTER_ADMIN(2), 
+        LOGIN_PASSENGER(3), 
+        REGISTER_PASSENGER(4), 
+        DISPLAY_MANUAL(5);
+
+        private final int value;
+
+        MainMenuOption(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public static MainMenuOption fromValue(int value) {
+            for (MainMenuOption option : values()) {
+                if (option.value == value) {
+                    return option;
+                }
+            }
+            throw new IllegalArgumentException("Invalid menu option: " + value);
+        }
+    }
+
     // Constants for array sizes and limits
     private static final int MAX_TICKETS_PER_BOOKING = 10;
     
@@ -29,32 +58,32 @@ public class User {
         Scanner read = new Scanner(System.in);
 
         displayWelcomeMessage();
-        int desiredOption = getValidMenuOption(read);
+        MainMenuOption desiredOption = MainMenuOption.fromValue(getValidMenuOption(read));
 
         do {
             Scanner read1 = new Scanner(System.in);
             
             switch (desiredOption) {
-                case 1:
+                case LOGIN_ADMIN:
                     adminLogin(r1, c1, f1, bookingAndReserving, read, read1);
                     break;
-                case 2:
+                case REGISTER_ADMIN:
                     countNumOfUsers = registerAdmin(r1, countNumOfUsers, read1);
                     break;
-                case 3:
+                case LOGIN_PASSENGER:
                     passengerLogin(r1, c1, f1, bookingAndReserving, read, read1);
                     break;
-                case 4:
+                case REGISTER_PASSENGER:
                     c1.addNewCustomer();
                     break;
-                case 5:
+                case DISPLAY_MANUAL:
                     manualInstructions();
                     break;
             }
 
             displayMainMenu();
-            desiredOption = getValidMenuOption(read1);
-        } while (desiredOption != 0);
+            desiredOption = MainMenuOption.fromValue(getValidMenuOption(read1));
+        } while (desiredOption != MainMenuOption.EXIT);
     }
 
     private static int registerAdmin(RolesAndPermissions r1, int countNumOfUsers, Scanner read1) {
@@ -81,8 +110,9 @@ public class User {
 
     private static int getValidMenuOption(Scanner scanner) {
         int option = scanner.nextInt();
-        while (option < MIN_MENU_OPTION || option > MAX_MAIN_MENU_OPTION) {
-            System.out.print("ERROR!! Please enter value between 0 - 4. Enter the value again :\t");
+        while (option < MainMenuOption.EXIT.getValue() || 
+               option > MainMenuOption.DISPLAY_MANUAL.getValue()) {
+            System.out.print("ERROR!! Please enter value between 0 - 5. Enter the value again :\t");
             option = scanner.nextInt();
         }
         return option;
@@ -327,12 +357,12 @@ public class User {
     }
 
     private static void displayMainMenu() {
-        System.out.println("\n\n\t\t(a) Press 0 to Exit.");
-        System.out.println("\t\t(b) Press 1 to Login as admin.");
-        System.out.println("\t\t(c) Press 2 to Register as admin.");
-        System.out.println("\t\t(d) Press 3 to Login as Passenger.");
-        System.out.println("\t\t(e) Press 4 to Register as Passenger.");
-        System.out.println("\t\t(f) Press 5 to Display the User Manual.");
+        System.out.println("\n\n\t\t(a) Press " + MainMenuOption.EXIT.getValue() + " to Exit.");
+        System.out.println("\t\t(b) Press " + MainMenuOption.LOGIN_ADMIN.getValue() + " to Login as admin.");
+        System.out.println("\t\t(c) Press " + MainMenuOption.REGISTER_ADMIN.getValue() + " to Register as admin.");
+        System.out.println("\t\t(d) Press " + MainMenuOption.LOGIN_PASSENGER.getValue() + " to Login as Passenger.");
+        System.out.println("\t\t(e) Press " + MainMenuOption.REGISTER_PASSENGER.getValue() + " to Register as Passenger.");
+        System.out.println("\t\t(f) Press " + MainMenuOption.DISPLAY_MANUAL.getValue() + " to Display the User Manual.");
         System.out.print("\t\tEnter the desired option:    ");
     }
 
